@@ -15,6 +15,7 @@ import { communityBtnData, communityData } from "../data/data";
 import { ButtonGroup } from "../components/renderButton";
 import StoreHeader from "../components/StoreHeader";
 import { Container, RowContainer } from "../components/container";
+import { TitleText } from "../components/texts";
 
 export default function ComunityScreen() {
   const [data, setData] = useState(communityData);
@@ -158,12 +159,6 @@ const NewsImage = styled.Image`
   height: 200px;
   margin-top: 10px;
   border-radius: 10px;
-`;
-
-const TitleText = styled.Text`
-  font-size: 18px;
-  color: #ffffff;
-  margin-top: 10px;
 `;
 
 const DescriptionText = styled.Text`

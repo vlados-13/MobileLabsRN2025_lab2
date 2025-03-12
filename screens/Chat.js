@@ -7,6 +7,7 @@ import Buttons from "../components/buttons";
 import { dandruff, ava, avatar, messageRust } from "../components/icons";
 import { messages } from "../data/data";
 import { Container, RowContainer } from "../components/container";
+import { MessageText } from "../components/texts";
 
 const iconsList = [ava, avatar, messageRust];
 
@@ -121,11 +122,6 @@ const MessageContent = styled.View`
 const UserName = styled.Text`
   color: #ffffff;
   font-size: 16px;
-`;
-
-const MessageText = styled.Text`
-  color: #a2a7b1;
-  font-size: 14px;
 `;
 
 const Sender = styled.Text`
