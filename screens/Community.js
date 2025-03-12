@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StatusBar,
@@ -10,35 +10,44 @@ import {
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import styled from "styled-components/native";
-import { comment, dandruff, like, repost } from "../components/icons";
+import { comment, like, repost } from "../components/icons";
 import { communityBtnData, communityData } from "../data/data";
 import { ButtonGroup } from "../components/renderButton";
 import StoreHeader from "../components/StoreHeader";
-import { Container, RowContainer } from "../components/container";
-import { TitleText } from "../components/texts";
+import {
+  BottomView,
+  Container,
+  RowCenterView,
+  RowContainer,
+} from "../components/container";
+import { GreyText, WhiteText } from "../components/texts";
 
 export default function ComunityScreen() {
   const [data, setData] = useState(communityData);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
 
+  useEffect(() => {
+    loadMoreData();
+  }, []);
+
   const loadMoreData = async () => {
     if (loading) return;
     setLoading(true);
 
-    setTimeout(() => {
-      const newData = [
-        ...data,
-        ...communityData.map((item, index) => ({
-          ...item,
-          id: `${item.id}_${page * 10 + index}`,
-        })),
-      ];
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      setData(newData);
-      setPage(page + 1);
-      setLoading(false);
-    }, 1000);
+    const newData = [
+      ...data,
+      ...communityData.map((item, index) => ({
+        ...item,
+        id: `${item.id}_${page * 10 + index}`,
+      })),
+    ];
+
+    setData(newData);
+    setPage((prevPage) => prevPage + 1);
+    setLoading(false);
   };
 
   return (
@@ -48,22 +57,22 @@ export default function ComunityScreen() {
         <StoreHeader title="Community" />
       </RowContainer>
 
-      <View style={{ marginBottom: 20 }}>
+      <BottomView>
         <CommunityText>
           Community and official content for all games and software
         </CommunityText>
-      </View>
+      </BottomView>
 
-      <View style={{ marginBottom: 20 }}>
+      <BottomView>
         <ButtonGroup buttons={communityBtnData} />
-      </View>
+      </BottomView>
 
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <NewsCard key={item.id}>
-            <AuthorContainer>
+            <RowCenterView>
               <Image
                 source={{
                   uri: "https://s3-alpha-sig.figma.com/img/e6d6/fd52/73e74d43bbd5b22247e8d9e7e2cb6b40?Expires=1742774400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=ao9tBb79CSRRJ2H1~~VvERKltS3Z9FBYQkUUlNVy6vbBlHnZ8R~ZCHyM~toY~vsJzvsJPW6owvqKtO42~6oCNba4IxCBa68uf~xiwxlgDFSu7lOQO2SLkn5qlsjzDbUuXSvZ4jhl70EXRyCN8wa~LbM4US3~M36Yr6ScHDGpw1YQ2TyYXohPvKjO5HLz0QZnPM~NQEmfC~7ECjY2CJcX3cYDuydwJ813y26cVD2-3P9Bh2-sojOe-xPfgnO7LAJtTiy9fBR62YsaFnsEruVvW4WhE23Br4Ffdx8wGp5oY7e2x0OECl3O1LX4s-okJQ7yIKULgbm3nSpPG2QoaDLM4w__",
@@ -71,51 +80,43 @@ export default function ComunityScreen() {
                 style={{ width: 40, height: 40, borderRadius: 20 }}
               />
               <DataContainer>
-                <Text
-                  style={{ marginLeft: 10, fontSize: 16, color: "#FFFFFF" }}
-                >
-                  Eurogamer
-                </Text>
-                <Text
-                  style={{ marginLeft: 10, fontSize: 12, color: "#7b8d9d" }}
-                >
+                <WhiteText style={{ marginLeft: 10 }}>Eurogamer</WhiteText>
+                <GreyText size={12} style={{ marginLeft: 10 }}>
                   Yesterday • 2:20 PM
-                </Text>
+                </GreyText>
               </DataContainer>
               <TouchableOpacity
                 style={{ justifyContent: "center", alignItems: "center" }}
               >
                 <Text style={{ fontSize: 18, color: "#4B5664" }}>...</Text>
               </TouchableOpacity>
-            </AuthorContainer>
+            </RowCenterView>
             <NewsImage source={{ uri: item.image }} />
 
-            <TitleText>{item.title}</TitleText>
+            <WhiteText style={{ marginTop: 10 }}>{item.title}</WhiteText>
 
-            <DescriptionText>{item.description}</DescriptionText>
+            <GreyText size={14} style={{ marginTop: 5 }}>
+              {item.description}
+            </GreyText>
             <Hr />
 
-            <LikeCommentContainer>
-              <LikeContainer>
+            <RowCenterView style={{ marginTop: 10 }}>
+              <RowCenterView>
                 <SvgXml xml={like} style={{ width: 20, height: 20 }} />
-                <Text style={{ color: "#7b8d9d", marginLeft: 5 }}>
-                  {item.likes}
-                </Text>
-              </LikeContainer>
+                <GreyText style={{ marginLeft: 5 }}>{item.likes}</GreyText>
+              </RowCenterView>
 
-              <CommentContainer>
+              <RowCenterView style={{ marginLeft: 20 }}>
                 <SvgXml xml={comment} style={{ width: 20, height: 20 }} />
-                <Text style={{ color: "#7b8d9d", marginLeft: 5 }}>
-                  {item.comments}
-                </Text>
-              </CommentContainer>
+                <GreyText style={{ marginLeft: 5 }}>{item.comments}</GreyText>
+              </RowCenterView>
 
-              <CommentContainer style={{ marginLeft: "50%" }}>
+              <RowCenterView style={{ marginLeft: "50%" }}>
                 <TouchableOpacity style={{ alignSelf: "center" }}>
                   <SvgXml xml={repost} style={{ width: 20, height: 20 }} />
                 </TouchableOpacity>
-              </CommentContainer>
-            </LikeCommentContainer>
+              </RowCenterView>
+            </RowCenterView>
           </NewsCard>
         )}
         onEndReached={loadMoreData}
@@ -143,12 +144,6 @@ const NewsCard = styled.View`
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 `;
 
-const AuthorContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
-
 const DataContainer = styled.View`
   flex-direction: column;
   flex-grow: 1;
@@ -159,29 +154,6 @@ const NewsImage = styled.Image`
   height: 200px;
   margin-top: 10px;
   border-radius: 10px;
-`;
-
-const DescriptionText = styled.Text`
-  font-size: 14px;
-  color: #7b8d9d;
-  margin-top: 5px;
-`;
-
-const LikeCommentContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-  margin-top: 10px;
-`;
-
-const LikeContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-const CommentContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-  margin-left: 20px;
 `;
 
 const Hr = styled.View`

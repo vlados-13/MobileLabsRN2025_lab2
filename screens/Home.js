@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StatusBar,
@@ -13,27 +13,42 @@ import { newsData, buttonData } from "../data/data";
 import { ButtonGroup } from "../components/renderButton";
 import StoreHeader from "../components/StoreHeader";
 import PriceComponent from "../components/PriceComponent";
-import { Container, RowContainer } from "../components/container";
+import {
+  BottomView,
+  Container,
+  RowCenterView,
+  RowContainer,
+  RowView,
+} from "../components/container";
+import { GreyText, WhiteText } from "../components/texts";
 
 export default function HomeScreen() {
   const [data, setData] = useState(newsData);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
 
-  const loadMoreData = useCallback(async () => {
+  useEffect(() => {
+    loadMoreData();
+  }, []);
+
+  const loadMoreData = async () => {
     if (loading) return;
     setLoading(true);
 
-    setTimeout(() => {
-      const newData = newsData.map((item) => ({
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const newData = [
+      ...data,
+      ...newsData.map((item, index) => ({
         ...item,
-        id: `${item.id}-${page}`,
-      }));
-      setData([...data, ...newData]);
-      setPage(page + 1);
-      setLoading(false);
-    }, 500);
-  }, [loading, data, page]);
+        id: `${item.id}_${page * 10 + index}`,
+      })),
+    ];
+
+    setData(newData);
+    setPage((prevPage) => prevPage + 1);
+    setLoading(false);
+  };
 
   const renderItem = ({ item }) => {
     if (!item.discount || item.discount === "0") return null;
@@ -46,7 +61,9 @@ export default function HomeScreen() {
             style={cardStyles.image}
           >
             <CardContent>
-              <CardTitle>{item.headline}</CardTitle>
+              <WhiteText size={20} style={{ fontWeight: "700" }}>
+                {item.headline}
+              </WhiteText>
               <CardDescription>{item.description}</CardDescription>
             </CardContent>
 
@@ -71,6 +88,7 @@ export default function HomeScreen() {
           <IconsContainer>
             {item.platform.split(", ").map((platform, index) => (
               <SvgXml
+                key={index}
                 xml={platform === "Windows" ? windows : apple}
                 width={platform === "Windows" ? 12.5 : 12}
                 height={platform === "Windows" ? 12.5 : 12}
@@ -78,11 +96,13 @@ export default function HomeScreen() {
             ))}
           </IconsContainer>
 
-          <NamesContainer>
+          <RowView>
             {item.platform.split(", ").map((platform, index) => (
-              <PlatformText key={index}>{platform}</PlatformText>
+              <GreyText key={index} size={14} style={{ marginRight: 5 }}>
+                {platform}
+              </GreyText>
             ))}
-          </NamesContainer>
+          </RowView>
         </PlatformsContainer>
       ) : null;
 
@@ -91,22 +111,22 @@ export default function HomeScreen() {
         <ImageBlock source={{ uri: item.image }} />
 
         <TextWrapper>
-          <Title>{item.headline}</Title>
-          <PlatformIconsWrapper>{platforms}</PlatformIconsWrapper>
+          <WhiteText size={16}>{item.headline}</WhiteText>
+          <RowView style={{ marginTop: 5 }}>{platforms}</RowView>
         </TextWrapper>
 
         <PriceContainer>
           {item.discount && item.discount !== "0" ? (
-            <PriceWrapper>
+            <RowCenterView>
               <OldPrice>{item.oldPrice}</OldPrice>
-              <NewPrice>{item.price}</NewPrice>
-            </PriceWrapper>
+              <WhiteText size={18}>{item.price}</WhiteText>
+            </RowCenterView>
           ) : (
-            <Price>{item.price}</Price>
+            <WhiteText size={18}>{item.price}</WhiteText>
           )}
           {item.discount && item.discount !== "0" && (
             <DiscountBadge>
-              <DiscountText>{item.discount}</DiscountText>
+              <WhiteText size={12}>{item.discount}</WhiteText>
             </DiscountBadge>
           )}
         </PriceContainer>
@@ -122,32 +142,31 @@ export default function HomeScreen() {
         <SvgXml xml={dandruff} />
       </RowContainer>
 
-      <View>
+      <BottomView>
         <FlatList
           data={data}
           renderItem={renderItem}
           keyExtractor={(item, index) => `horizontal-${item.id}-${index}`}
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={{ marginBottom: 20 }}
           onEndReached={loadMoreData}
           onEndReachedThreshold={0.5}
           ListFooterComponent={
             loading ? <ActivityIndicator size="large" color="#31BCFC" /> : null
           }
+          scrollEventThrottle={16}
         />
-      </View>
+      </BottomView>
 
-      <View style={{ marginBottom: 20 }}>
+      <BottomView>
         <ButtonGroup buttons={buttonData} />
-      </View>
+      </BottomView>
 
-      <View>
+      <View style={{ flex: 1 }}>
         <FlatList
           data={data}
           renderItem={renderList}
           keyExtractor={(item, index) => `vertical-${item.id}-${index}`}
-          vertical
           showsVerticalScrollIndicator={false}
           style={{ marginBottom: 10 }}
           onEndReached={loadMoreData}
@@ -191,12 +210,6 @@ const CardContent = styled.View`
   padding-right: 10px;
 `;
 
-const CardTitle = styled.Text`
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: bold;
-`;
-
 const CardDescription = styled.Text`
   color: gray;
   font-size: 13px;
@@ -238,29 +251,8 @@ const TextWrapper = styled.View`
   flex: 1;
 `;
 
-const Title = styled.Text`
-  color: #ffffff;
-  font-size: 16px;
-`;
-
-const PlatformIconsWrapper = styled.View`
-  flex-direction: row;
-  margin-top: 5px;
-`;
-
 const PriceContainer = styled.View`
   align-items: flex-end;
-`;
-
-const PriceWrapper = styled.View`
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-`;
-
-const Price = styled.Text`
-  color: #ffffff;
-  font-size: 18px;
 `;
 
 const OldPrice = styled.Text`
@@ -268,11 +260,6 @@ const OldPrice = styled.Text`
   font-size: 12px;
   text-decoration-line: line-through;
   margin-right: 5px;
-`;
-
-const NewPrice = styled.Text`
-  color: #ffffff;
-  font-size: 18px;
 `;
 
 const DiscountBadge = styled.View`
@@ -284,11 +271,6 @@ const DiscountBadge = styled.View`
   align-items: center;
 `;
 
-const DiscountText = styled.Text`
-  color: #ffffff;
-  font-size: 12px;
-`;
-
 const PlatformsContainer = styled.View`
   flex-direction: row;
   align-items: center;
@@ -298,14 +280,4 @@ const PlatformsContainer = styled.View`
 const IconsContainer = styled.View`
   flex-direction: row;
   gap: 8px;
-`;
-
-const NamesContainer = styled.View`
-  flex-direction: row;
-`;
-
-const PlatformText = styled.Text`
-  font-size: 14px;
-  color: #7b8d9d;
-  margin-right: 5px;
 `;

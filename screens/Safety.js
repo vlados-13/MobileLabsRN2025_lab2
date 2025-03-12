@@ -3,11 +3,10 @@ import { StatusBar, Text, View } from "react-native";
 import styled from "styled-components/native";
 import StoreHeader from "../components/StoreHeader";
 import Buttons from "../components/buttons";
-import { Container, RowContainer } from "../components/container";
-import { MessageText } from "../components/texts";
-import { SvgXml } from "react-native-svg";
+import { BottomView, Container, RowContainer } from "../components/container";
+import { LightGreyText, WhiteText } from "../components/texts";
 import { returnIcon } from "../components/icons";
-import ActionButton from "../components/ActionButton"; // Імпортуємо новий компонент
+import ActionButton from "../components/ActionButton";
 
 const SafetyScreen = () => {
   const [activeButton, setActiveButton] = useState("button1");
@@ -22,29 +21,29 @@ const SafetyScreen = () => {
       <RowContainer>
         <StoreHeader title="Safety" />
       </RowContainer>
-      <ButtonsContainer>
+      <BottomView>
         <Buttons
           activeButton={activeButton}
           handlePress={handlePress}
           button1Text="Guard"
           button2Text="Confirmations"
         />
-      </ButtonsContainer>
+      </BottomView>
       <CentredView>
-        <MessageText style={{ textAlign: "center" }}>
+        <LightGreyText style={{ textAlign: "center" }}>
           Logged in as player
-        </MessageText>
-        <BigTitle>N5KCV</BigTitle>
+        </LightGreyText>
+        <WhiteText size={52}>N5KCV</WhiteText>
         <Hr>
           <LeftSide />
           <RightSide />
         </Hr>
       </CentredView>
       <CentredView>
-        <Paragraph>
+        <WhiteText size={14} style={{ lineHeight: 22, width: "100%" }}>
           You’ll enter your code each time you enter your password to sign in to
           your Steam account.
-        </Paragraph>
+        </WhiteText>
         <BlueText>
           Tip: If you don't share your PC, you can select "Remember my password"
           when you sign in to the PC client to enter your password and
@@ -59,16 +58,6 @@ const SafetyScreen = () => {
 };
 
 export default SafetyScreen;
-
-const ButtonsContainer = styled.View`
-  margin-bottom: 20px;
-`;
-
-const BigTitle = styled.Text`
-  font-size: 52px;
-  color: #ffffff;
-  text-align: center;
-`;
 
 const Hr = styled.View`
   width: 160px;
@@ -97,13 +86,6 @@ const CentredView = styled.View`
   align-items: center;
   margin-top: 10px;
   margin-bottom: 10px;
-`;
-
-const Paragraph = styled.Text`
-  font-size: 14px;
-  color: #ffffff;
-  line-height: 22px;
-  width: 100%;
 `;
 
 const BlueText = styled.Text`

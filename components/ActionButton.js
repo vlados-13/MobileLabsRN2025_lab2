@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components/native";
 import { SvgXml } from "react-native-svg";
+import { WhiteText } from "./texts";
 
 const ActionButton = ({ text, icon }) => {
   return (
     <ViewBtn>
-      <TitleText>{text}</TitleText>
+      <WhiteText size={16}>{text}</WhiteText>
       <SvgXml xml={icon} />
     </ViewBtn>
   );
@@ -14,7 +15,7 @@ const ActionButton = ({ text, icon }) => {
 export default ActionButton;
 
 const ViewBtn = styled.View`
-  width: 325px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   padding: 15px;
@@ -23,9 +24,4 @@ const ViewBtn = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-`;
-
-const TitleText = styled.Text`
-  font-size: 16px;
-  color: #ffffff;
 `;

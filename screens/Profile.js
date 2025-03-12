@@ -5,7 +5,7 @@ import { Container } from "../components/container";
 import { SvgXml } from "react-native-svg";
 import { bigRUST, returnIcon } from "../components/icons";
 import ActionButton from "../components/ActionButton";
-import { TitleText } from "../components/texts";
+import { WhiteText } from "../components/texts";
 
 const ProfileScreen = () => {
   return (
@@ -13,11 +13,11 @@ const ProfileScreen = () => {
       <StatusBar style="dark" backgroundColor="#171a21" />
       <CentredView>
         <SvgContainer>
-          <SvgXml xml={bigRUST} />
+          <SvgXml xml={bigRUST} width="100%" height="100%" />
           <OnlineIndicator />
         </SvgContainer>
-        <TitleText>Владислав Барсук</TitleText>
-        <TitleText>ІПЗ-23-1</TitleText>
+        <WhiteText>Владислав Барсук</WhiteText>
+        <WhiteText>ІПЗ-23-1</WhiteText>
       </CentredView>
       <BottomView>
         <ActionButton text="Setting" icon={returnIcon} />
@@ -40,18 +40,20 @@ const BottomView = styled.View`
 
 const SvgContainer = styled.View`
   position: relative;
-  border-radius: 50%;
+  width: 100px;
+  height: 100px;
   overflow: hidden;
+  border-radius: 50%;
 `;
 
 const OnlineIndicator = styled.View`
   position: absolute;
-  bottom: 8;
-  right: 10;
+  bottom: 10px;
+  right: 10px;
   width: 25px;
   height: 25px;
   background-color: #00d44b;
   border-radius: 50%;
   border-width: 2px;
-  border-color: #fff;
+  z-index: 1;
 `;

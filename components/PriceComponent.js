@@ -1,16 +1,17 @@
 import React from "react";
 import styled from "styled-components/native";
+import { WhiteText } from "./texts";
 
 const PriceComponent = ({ oldPrice, price, discount }) => {
   return (
     <PriceContainer>
       {discount && (
         <DiscountBadge>
-          <DiscountText>{discount}</DiscountText>
+          <WhiteText size={18}>{discount}</WhiteText>
         </DiscountBadge>
       )}
       {oldPrice && <OldPrice>{oldPrice}</OldPrice>}
-      <NewPrice>{price}</NewPrice>
+      <WhiteText size={18}>{price}</WhiteText>
     </PriceContainer>
   );
 };
@@ -21,7 +22,7 @@ const PriceContainer = styled.View`
   left: 10px;
   margin-top: 5px;
   min-width: 40px;
-  max-width: 180px;
+  max-width: 160px;
   flex-direction: row;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
@@ -30,15 +31,9 @@ const PriceContainer = styled.View`
 
 const DiscountBadge = styled.View`
   background-color: #00d44b80;
-  padding: 5px 10px;
+  padding: 1px 3px;
   border-radius: 5px;
   margin-right: 10px;
-`;
-
-const DiscountText = styled.Text`
-  color: #ffffff;
-  font-size: 18px;
-  font-weight: bold;
 `;
 
 const OldPrice = styled.Text`
@@ -46,9 +41,4 @@ const OldPrice = styled.Text`
   text-decoration-line: line-through;
   font-size: 18px;
   margin-right: 10px;
-`;
-
-const NewPrice = styled.Text`
-  color: #ffffff;
-  font-size: 18px;
 `;

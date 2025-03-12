@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FlatList } from "react-native";
 import styled from "styled-components/native";
 import { SvgXml } from "react-native-svg";
+import { WhiteText } from "./texts";
 
 export const ButtonGroup = ({ buttons }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -18,7 +19,9 @@ export const ButtonGroup = ({ buttons }) => {
       {item.icon ? (
         <SvgXml xml={item.icon} width={15} height={15} />
       ) : (
-        <ButtonText>{item.title}</ButtonText>
+        <WhiteText size={12} style={{ fontWeight: "bold" }}>
+          {item.title}
+        </WhiteText>
       )}
     </StyledButton>
   );
@@ -42,10 +45,4 @@ const StyledButton = styled.TouchableOpacity`
   border-radius: 10px;
   justify-content: center;
   align-items: center;
-`;
-
-const ButtonText = styled.Text`
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: bold;
 `;

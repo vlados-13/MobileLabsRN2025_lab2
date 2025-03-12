@@ -1,27 +1,18 @@
 import React from "react";
-import { View } from "react-native";
 import { SvgXml } from "react-native-svg";
-import styled from "styled-components/native";
 import { steamIcon } from "./icons";
+import { WhiteText } from "./texts";
+import { RowCenterView } from "./container";
 
 const StoreHeader = ({ title }) => {
   return (
-    <HeaderContainer>
+    <RowCenterView>
       <SvgXml xml={steamIcon} />
-      <StoreText>{title}</StoreText>
-    </HeaderContainer>
+      <WhiteText size={28} style={{ marginLeft: 10 }}>
+        {title}
+      </WhiteText>
+    </RowCenterView>
   );
 };
 
 export default StoreHeader;
-
-const HeaderContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-const StoreText = styled.Text`
-  color: #ffffff;
-  font-size: 28px;
-  margin-left: 10px;
-`;

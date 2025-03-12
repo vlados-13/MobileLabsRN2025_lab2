@@ -15,3 +15,16 @@ export const RowContainer = styled.View`
   margin-top: 30px;
   margin-bottom: 20px;
 `;
+
+export const BottomView = styled.View`
+  margin-bottom: 20px;
+`;
+
+export const RowCenterView = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const RowView = styled.View`
+  flex-direction: row;
+`;

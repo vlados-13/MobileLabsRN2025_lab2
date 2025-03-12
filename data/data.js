@@ -148,6 +148,7 @@ export const messages = [
     online: true,
     message: "I'm already starting to play",
     lastMessage: "You",
+    svg: "ava",
   },
   {
     id: 2,
@@ -155,6 +156,7 @@ export const messages = [
     online: false,
     message: "I'm ready to play",
     lastMessage: "Him",
+    svg: "avatar",
   },
   {
     id: 3,
@@ -162,6 +164,7 @@ export const messages = [
     online: false,
     message: "Let's go",
     lastMessage: "You",
+    svg: "messageRust",
   },
   {
     id: 4,
@@ -169,13 +172,15 @@ export const messages = [
     online: true,
     message: "Hey, how are you?",
     lastMessage: "You",
+    svg: "ava",
   },
   {
     id: 5,
     interlocutor: "David Smith",
     online: true,
     message: "Let me know when you're ready",
-    lastMessage: "You",
+    svg: "messageRust",
+    svg: "avatar",
   },
   {
     id: 6,
@@ -183,6 +188,7 @@ export const messages = [
     online: false,
     message: "I can't wait to see you again",
     lastMessage: "Him",
+    svg: "ava",
   },
   {
     id: 7,
@@ -190,6 +196,7 @@ export const messages = [
     online: true,
     message: "Just finished my work",
     lastMessage: "You",
+    svg: "avatar",
   },
   {
     id: 8,
@@ -197,6 +204,7 @@ export const messages = [
     online: true,
     message: "What's up?",
     lastMessage: "You",
+    svg: "ava",
   },
   {
     id: 9,
@@ -204,47 +212,6 @@ export const messages = [
     online: false,
     message: "I'll be there soon",
     lastMessage: "Him",
-  },
-  {
-    id: 10,
-    interlocutor: "James Bond",
-    online: true,
-    message: "I have a new mission for you",
-    lastMessage: "You",
-  },
-  {
-    id: 11,
-    interlocutor: "Michael Lee",
-    online: true,
-    message: "Let's grab a coffee tomorrow",
-    lastMessage: "You",
-  },
-  {
-    id: 12,
-    interlocutor: "Natasha Romanoff",
-    online: false,
-    message: "Busy with work, talk later",
-    lastMessage: "You",
-  },
-  {
-    id: 13,
-    interlocutor: "Tony Stark",
-    online: true,
-    message: "I'll send you the plans soon",
-    lastMessage: "You",
-  },
-  {
-    id: 14,
-    interlocutor: "Bruce Wayne",
-    online: false,
-    message: "See you at the gala",
-    lastMessage: "Him",
-  },
-  {
-    id: 15,
-    interlocutor: "Peter Parker",
-    online: true,
-    message: "Have you seen the latest news?",
-    lastMessage: "You",
+    svg: "messageRust",
   },
 ];

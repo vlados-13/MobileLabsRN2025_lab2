@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
-export const MessageText = styled.Text`
+export const LightGreyText = styled.Text`
   color: #a2a7b1;
-  font-size: 14px;
+  font-size: ${({ size }) => (size ? `${size}px` : "14px")};
 `;
 
-export const TitleText = styled.Text`
-  font-size: 16px;
+export const WhiteText = styled.Text`
+  font-size: ${({ size }) => (size ? `${size}px` : "16px")};
   color: #ffffff;
-  margin-top: 10px;
+`;
+
+export const GreyText = styled.Text`
+  color: #7b8d9d;
+  font-size: ${({ size }) => (size ? `${size}px` : "16px")};
 `;
