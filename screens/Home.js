@@ -25,8 +25,11 @@ export default function HomeScreen() {
     setLoading(true);
 
     setTimeout(() => {
-      const newData = [...data, ...newsData];
-      setData(newData);
+      const newData = newsData.map((item) => ({
+        ...item,
+        id: `${item.id}-${page}`,
+      }));
+      setData([...data, ...newData]);
       setPage(page + 1);
       setLoading(false);
     }, 500);
@@ -123,7 +126,7 @@ export default function HomeScreen() {
         <FlatList
           data={data}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, index) => `horizontal-${item.id}-${index}`}
           horizontal
           showsHorizontalScrollIndicator={false}
           style={{ marginBottom: 20 }}
@@ -143,7 +146,7 @@ export default function HomeScreen() {
         <FlatList
           data={data}
           renderItem={renderList}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, index) => `vertical-${item.id}-${index}`}
           vertical
           showsVerticalScrollIndicator={false}
           style={{ marginBottom: 10 }}

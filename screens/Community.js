@@ -45,7 +45,6 @@ export default function ComunityScreen() {
       <StatusBar style="dark" backgroundColor="#171a21" />
       <RowContainer>
         <StoreHeader title="Community" />
-        <SvgXml xml={dandruff} />
       </RowContainer>
 
       <View style={{ marginBottom: 20 }}>
