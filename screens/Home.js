@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   View,
-  StatusBar,
   FlatList,
   ImageBackground,
   ActivityIndicator,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { SvgXml } from "react-native-svg";
 import styled from "styled-components/native";
 import { dandruff, windows, apple } from "../components/icons";
@@ -20,35 +20,17 @@ import {
   RowContainer,
   RowView,
 } from "../components/container";
-import { GreyText, WhiteText } from "../components/texts";
+import { GreyText, ThemedText, WhiteText } from "../components/texts";
+import useLoadMore from "../components/hooks/loadMore";
+import { useTheme } from "../components/hooks/themeContext";
 
 export default function HomeScreen() {
-  const [data, setData] = useState(newsData);
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
+  const { theme } = useTheme();
+  const { data, loading, loadMoreData } = useLoadMore(newsData, () => newsData);
 
   useEffect(() => {
     loadMoreData();
   }, []);
-
-  const loadMoreData = async () => {
-    if (loading) return;
-    setLoading(true);
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const newData = [
-      ...data,
-      ...newsData.map((item, index) => ({
-        ...item,
-        id: `${item.id}_${page * 10 + index}`,
-      })),
-    ];
-
-    setData(newData);
-    setPage((prevPage) => prevPage + 1);
-    setLoading(false);
-  };
 
   const renderItem = ({ item }) => {
     if (!item.discount || item.discount === "0") return null;
@@ -111,7 +93,7 @@ export default function HomeScreen() {
         <ImageBlock source={{ uri: item.image }} />
 
         <TextWrapper>
-          <WhiteText size={16}>{item.headline}</WhiteText>
+          <ThemedText size={16}>{item.headline}</ThemedText>
           <RowView style={{ marginTop: 5 }}>{platforms}</RowView>
         </TextWrapper>
 
@@ -119,10 +101,10 @@ export default function HomeScreen() {
           {item.discount && item.discount !== "0" ? (
             <RowCenterView>
               <OldPrice>{item.oldPrice}</OldPrice>
-              <WhiteText size={18}>{item.price}</WhiteText>
+              <ThemedText size={18}>{item.price}</ThemedText>
             </RowCenterView>
           ) : (
-            <WhiteText size={18}>{item.price}</WhiteText>
+            <ThemedText size={18}>{item.price}</ThemedText>
           )}
           {item.discount && item.discount !== "0" && (
             <DiscountBadge>
@@ -136,7 +118,10 @@ export default function HomeScreen() {
 
   return (
     <Container>
-      <StatusBar style="dark" backgroundColor="#171a21" />
+      <StatusBar
+        style="light"
+        backgroundColor={theme === "dark" ? "#1C202C" : "#a2a7b1"}
+      />
       <RowContainer>
         <StoreHeader title="Store" />
         <SvgXml xml={dandruff} />

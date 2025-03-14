@@ -4,7 +4,7 @@ export const Container = styled.View`
   flex: 1;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #1c202c;
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export const RowContainer = styled.View`
@@ -12,7 +12,7 @@ export const RowContainer = styled.View`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 50px;
   margin-bottom: 20px;
 `;
 

@@ -14,3 +14,8 @@ export const GreyText = styled.Text`
   color: #7b8d9d;
   font-size: ${({ size }) => (size ? `${size}px` : "16px")};
 `;
+
+export const ThemedText = styled.Text`
+  color: ${({ theme }) => theme.text};
+  font-size: ${({ size }) => (size ? `${size}px` : "16px")};
+`;

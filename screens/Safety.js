@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { StatusBar, Text, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import styled from "styled-components/native";
 import StoreHeader from "../components/StoreHeader";
 import Buttons from "../components/buttons";
 import { BottomView, Container, RowContainer } from "../components/container";
-import { LightGreyText, WhiteText } from "../components/texts";
+import { LightGreyText, ThemedText } from "../components/texts";
 import { returnIcon } from "../components/icons";
 import ActionButton from "../components/ActionButton";
+import { useTheme } from "../components/hooks/themeContext";
 
 const SafetyScreen = () => {
   const [activeButton, setActiveButton] = useState("button1");
+  const { theme } = useTheme();
 
   const handlePress = (button) => {
     setActiveButton(button);
@@ -17,7 +19,10 @@ const SafetyScreen = () => {
 
   return (
     <Container>
-      <StatusBar style="dark" backgroundColor="#171a21" />
+      <StatusBar
+        style="light"
+        backgroundColor={theme === "dark" ? "#1C202C" : "#a2a7b1"}
+      />
       <RowContainer>
         <StoreHeader title="Safety" />
       </RowContainer>
@@ -33,17 +38,21 @@ const SafetyScreen = () => {
         <LightGreyText style={{ textAlign: "center" }}>
           Logged in as player
         </LightGreyText>
-        <WhiteText size={52}>N5KCV</WhiteText>
-        <Hr>
+        <ThemedText size={52}>N5KCV</ThemedText>
+        <Hr theme={theme}>
           <LeftSide />
-          <RightSide />
+          <RightSide theme={theme} />
         </Hr>
       </CentredView>
+
       <CentredView>
-        <WhiteText size={14} style={{ lineHeight: 22, width: "100%" }}>
+        <ThemedText
+          size={14}
+          style={{ lineHeight: 22, width: "100%", letterSpacing: -0.28 }}
+        >
           You’ll enter your code each time you enter your password to sign in to
           your Steam account.
-        </WhiteText>
+        </ThemedText>
         <BlueText>
           Tip: If you don't share your PC, you can select "Remember my password"
           when you sign in to the PC client to enter your password and
@@ -65,7 +74,7 @@ const Hr = styled.View`
   margin-top: 10px;
   border-radius: 3.5px;
   flex-direction: row;
-  border: 1px solid white;
+  border: 1px solid ${({ theme }) => (theme === "dark" ? "#ffffff" : "#1C202C")};
 `;
 
 const LeftSide = styled.View`
@@ -79,7 +88,7 @@ const RightSide = styled.View`
   width: 30%;
   height: 100%;
   border-radius: 15px;
-  background-color: #1c202c;
+  background-color: ${({ theme }) => (theme === "dark" ? "#1C202C" : "ffffff")};
 `;
 
 const CentredView = styled.View`

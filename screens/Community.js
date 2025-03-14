@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   View,
-  StatusBar,
   Text,
   TouchableOpacity,
   Image,
@@ -20,45 +19,34 @@ import {
   RowCenterView,
   RowContainer,
 } from "../components/container";
-import { GreyText, WhiteText } from "../components/texts";
+import { GreyText, ThemedText } from "../components/texts";
+import useLoadMore from "../components/hooks/loadMore";
+import { useTheme } from "../components/hooks/themeContext";
+import { StatusBar } from "expo-status-bar";
 
 export default function ComunityScreen() {
-  const [data, setData] = useState(communityData);
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
+  const { theme } = useTheme();
+  const { data, loading, loadMoreData } = useLoadMore(
+    communityData,
+    () => communityData
+  );
 
   useEffect(() => {
     loadMoreData();
   }, []);
 
-  const loadMoreData = async () => {
-    if (loading) return;
-    setLoading(true);
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const newData = [
-      ...data,
-      ...communityData.map((item, index) => ({
-        ...item,
-        id: `${item.id}_${page * 10 + index}`,
-      })),
-    ];
-
-    setData(newData);
-    setPage((prevPage) => prevPage + 1);
-    setLoading(false);
-  };
-
   return (
-    <Container style={{ backgroundColor: "#171A24" }}>
-      <StatusBar style="dark" backgroundColor="#171a21" />
+    <Container>
+      <StatusBar
+        style="light"
+        backgroundColor={theme === "dark" ? "#1C202C" : "#a2a7b1"}
+      />
       <RowContainer>
         <StoreHeader title="Community" />
       </RowContainer>
 
       <BottomView>
-        <CommunityText>
+        <CommunityText theme={theme}>
           Community and official content for all games and software
         </CommunityText>
       </BottomView>
@@ -71,7 +59,7 @@ export default function ComunityScreen() {
         data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <NewsCard key={item.id}>
+          <NewsCard theme={theme} key={item.id}>
             <RowCenterView>
               <Image
                 source={{
@@ -80,35 +68,46 @@ export default function ComunityScreen() {
                 style={{ width: 40, height: 40, borderRadius: 20 }}
               />
               <DataContainer>
-                <WhiteText style={{ marginLeft: 10 }}>Eurogamer</WhiteText>
-                <GreyText size={12} style={{ marginLeft: 10 }}>
+                <ThemedText style={{ marginLeft: 10 }}>Eurogamer</ThemedText>
+                <GreyText size={12} theme={theme} style={{ marginLeft: 10 }}>
                   Yesterday • 2:20 PM
                 </GreyText>
               </DataContainer>
               <TouchableOpacity
                 style={{ justifyContent: "center", alignItems: "center" }}
               >
-                <Text style={{ fontSize: 18, color: "#4B5664" }}>...</Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: theme === "dark" ? "#4B5664" : "#000",
+                  }}
+                >
+                  ...
+                </Text>
               </TouchableOpacity>
             </RowCenterView>
             <NewsImage source={{ uri: item.image }} />
 
-            <WhiteText style={{ marginTop: 10 }}>{item.title}</WhiteText>
+            <ThemedText style={{ marginTop: 10 }}>{item.title}</ThemedText>
 
-            <GreyText size={14} style={{ marginTop: 5 }}>
+            <GreyText size={14} theme={theme} style={{ marginTop: 5 }}>
               {item.description}
             </GreyText>
-            <Hr />
+            <Hr theme={theme} />
 
             <RowCenterView style={{ marginTop: 10 }}>
               <RowCenterView>
                 <SvgXml xml={like} style={{ width: 20, height: 20 }} />
-                <GreyText style={{ marginLeft: 5 }}>{item.likes}</GreyText>
+                <GreyText theme={theme} style={{ marginLeft: 5 }}>
+                  {item.likes}
+                </GreyText>
               </RowCenterView>
 
               <RowCenterView style={{ marginLeft: 20 }}>
                 <SvgXml xml={comment} style={{ width: 20, height: 20 }} />
-                <GreyText style={{ marginLeft: 5 }}>{item.comments}</GreyText>
+                <GreyText theme={theme} style={{ marginLeft: 5 }}>
+                  {item.comments}
+                </GreyText>
               </RowCenterView>
 
               <RowCenterView style={{ marginLeft: "50%" }}>
@@ -130,7 +129,7 @@ export default function ComunityScreen() {
 }
 
 const CommunityText = styled.Text`
-  color: #7b8d9d;
+  color: ${(props) => (props.theme === "dark" ? "#7b8d9d" : "#333")};
   font-size: 14px;
   line-height: 18;
   text-align: left;
@@ -138,10 +137,13 @@ const CommunityText = styled.Text`
 
 const NewsCard = styled.View`
   margin-bottom: 20px;
-  background-color: #1c202c;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#1c202c" : "#ffffff"};
   padding: 15px;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px
+    ${(props) =>
+      props.theme === "dark" ? "rgba(0, 0, 0, 0.1)" : "rgba(0, 0, 0, 0.2)"};
 `;
 
 const DataContainer = styled.View`
@@ -159,6 +161,7 @@ const NewsImage = styled.Image`
 const Hr = styled.View`
   width: 334px;
   height: 1px;
-  background-color: #303649;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#303649" : "#e0e0e0"};
   margin-top: 10px;
 `;

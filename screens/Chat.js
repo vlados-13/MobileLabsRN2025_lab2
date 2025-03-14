@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { StatusBar, FlatList, ActivityIndicator } from "react-native";
+import { FlatList, ActivityIndicator } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { SvgXml } from "react-native-svg";
 import styled from "styled-components/native";
 import StoreHeader from "../components/StoreHeader";
@@ -7,7 +8,8 @@ import Buttons from "../components/buttons";
 import { dandruff, ava, avatar, messageRust } from "../components/icons";
 import { messages } from "../data/data";
 import { BottomView, Container, RowContainer } from "../components/container";
-import { LightGreyText, WhiteText } from "../components/texts";
+import { LightGreyText, ThemedText, WhiteText } from "../components/texts";
+import { useTheme } from "../components/hooks/themeContext";
 
 const iconsList = {
   ava,
@@ -30,6 +32,7 @@ const ChatScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const { theme } = useTheme();
 
   useEffect(() => {
     loadMoreMessages();
@@ -51,9 +54,7 @@ const ChatScreen = () => {
   const loadMoreMessages = async () => {
     if (loading) return;
     setLoading(true);
-
     await new Promise((resolve) => setTimeout(resolve, 1000));
-
     const newData = [
       ...data,
       ...messages.map((item, index) => ({
@@ -70,16 +71,19 @@ const ChatScreen = () => {
   };
 
   const renderItem = ({ item }) => (
-    <MessageContainer>
+    <MessageContainer theme={theme}>
       <StyledSvgXml xml={item.avatar} />
       <MessageContent>
-        <WhiteText size={16}>{item.interlocutor}</WhiteText>
+        <ThemedText size={16}>{item.interlocutor}</ThemedText>
         <LightGreyText>
-          {item.lastMessage === "You" && <WhiteText size={14}>You: </WhiteText>}
+          {item.lastMessage === "You" && (
+            <ThemedText size={14}>You: </ThemedText>
+          )}
           {item.message}
         </LightGreyText>
       </MessageContent>
       <StatusIndicator
+        theme={theme}
         online={item.status === "online"}
         randomColor={item.status === "randomColor"}
       >
@@ -92,7 +96,10 @@ const ChatScreen = () => {
 
   return (
     <Container>
-      <StatusBar style="dark" backgroundColor="#171a21" />
+      <StatusBar
+        style="light"
+        backgroundColor={theme === "dark" ? "#1C202C" : "#a2a7b1"}
+      />
       <RowContainer>
         <StoreHeader title="Chat" />
         <SvgXml xml={dandruff} />
@@ -125,9 +132,11 @@ const MessageContainer = styled.View`
   flex-direction: row;
   align-items: center;
   padding: 10px;
-  background-color: #1c202c;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#1C202C" : "#FFFFFF"};
   border-bottom-width: 1px;
-  border-bottom-color: #1c202c;
+  border-bottom-color: ${(props) =>
+    props.theme === "dark" ? "#1C202C" : "#E0E0E0"};
 `;
 
 const StyledSvgXml = styled(SvgXml)`
@@ -148,9 +157,9 @@ const StatusIndicator = styled.View`
     if (props.online) {
       return "#31BCFC";
     } else if (props.randomColor) {
-      return "#1c202c";
+      return props.theme === "dark" ? "#1C202C" : "#FFFFFF";
     } else {
-      return "#FFFFFF";
+      return props.theme === "dark" ? "#FFFFFF" : "#1C202C";
     }
   }};
   align-items: center;
@@ -158,6 +167,6 @@ const StatusIndicator = styled.View`
 `;
 
 const StatusIndicatorText = styled.Text`
-  color: #1c202c;
+  color: ${(props) => (props.theme === "dark" ? "#1C202C" : "#FFFFFF")};
   font-size: 10px;
 `;

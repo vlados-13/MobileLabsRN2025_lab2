@@ -1,23 +1,28 @@
 import React from "react";
-import { StatusBar, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import styled from "styled-components/native";
 import { Container } from "../components/container";
 import { SvgXml } from "react-native-svg";
 import { bigRUST, returnIcon } from "../components/icons";
 import ActionButton from "../components/ActionButton";
-import { WhiteText } from "../components/texts";
+import { ThemedText } from "../components/texts";
+import { useTheme } from "../components/hooks/themeContext";
 
 const ProfileScreen = () => {
+  const { theme } = useTheme();
   return (
     <Container>
-      <StatusBar style="dark" backgroundColor="#171a21" />
+      <StatusBar
+        style="light"
+        backgroundColor={theme === "dark" ? "#1C202C" : "#a2a7b1"}
+      />
       <CentredView>
         <SvgContainer>
           <SvgXml xml={bigRUST} width="100%" height="100%" />
           <OnlineIndicator />
         </SvgContainer>
-        <WhiteText>Владислав Барсук</WhiteText>
-        <WhiteText>ІПЗ-23-1</WhiteText>
+        <ThemedText>Владислав Барсук</ThemedText>
+        <ThemedText>ІПЗ-23-1</ThemedText>
       </CentredView>
       <BottomView>
         <ActionButton text="Setting" icon={returnIcon} />
